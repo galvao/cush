@@ -1,0 +1,9 @@
+@startuml
+interface command {
+    String name
+    Collection args
+}
+abstract class Collection {
+    int cursor
+}
+@enduml
