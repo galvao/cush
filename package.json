@@ -1,10 +1,13 @@
 {
   "name": "cush",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/bin/cush.js",
+    "watch-and-run": "ts-node-dev --respawn -- src/bin/cush.ts",
+    "parent-script": "PATH=$PATH:/var/www/html/cush/dist/Module"
   },
   "repository": {
     "type": "git",
@@ -18,11 +21,13 @@
   "homepage": "https://github.com/galvao/cush#readme",
   "dependencies": {
     "@databases/mysql": "^5.2.1",
+    "@tsconfig/node16": "^1.0.3",
     "mysql": "^2.18.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
-    "eslint": "^8.25.0"
+    "eslint": "^8.25.0",
+    "ts-node-dev": "^2.0.0"
   }
 }

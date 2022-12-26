@@ -6,6 +6,7 @@
     },
     "extends": "eslint:recommended",
     "overrides": [
+        "excludedFiles": "*.ts"
     ],
     "parserOptions": {
         "ecmaVersion": "latest"
