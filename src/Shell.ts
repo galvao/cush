@@ -39,10 +39,11 @@ class Shell
         }
     }
 
-    init()
+    init(): void
     {
-        this.cli.on('line', async (input: string) => {
+        this.cli.on('line', (input: string) => {
             input = input.trim();
+            console.log(input);
 
             if (input === 'quit') {
                 this.cli.close();
@@ -50,13 +51,13 @@ class Shell
             }
 
             let parser = new Parser(input);
-            parser.command.load();
+            let result = parser.command.load();
 
             this.cli.prompt();
         });
     }
 
-    getInterface()
+    getInterface(): Object
     {
         return this.cli;
     }
