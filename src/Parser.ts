@@ -7,9 +7,8 @@ class Parser
 
     constructor(input: string)
     {
-        this.moduleFilename = '';
-
         this.command = {};
+        this.moduleFilename = '';
 
         let inputParts = input.split(/\s/);
         let identifier = inputParts.shift();
@@ -24,7 +23,7 @@ class Parser
 
             if (part.at(0) === '-') {
                 if (part.at(1) === '-') {
-                    name = part.replace(/-/, '');
+                    name = part.replace(/-+/, '');
 
                     if (name.match(/=/)) {
                         let flagParts = name.split(/=/);
@@ -33,10 +32,20 @@ class Parser
                         value = flagParts[1].trim();
                     }
                 } else {
-                    let name = part.substring(1).trim();
+                    name = part.substring(1).trim();
                 }
 
-                flags.push({name: value});
+                flags.push(
+                    Object.defineProperty(
+                        {},
+                        name,
+                        {
+                            value: value,
+                            enumerable: true,
+                            writable: false
+                        }
+                    )
+                );
             } else {
                 if (partCounter === 0) {
                     subCommand = part.trim();
@@ -51,6 +60,8 @@ class Parser
         if (identifier !== undefined) {
             this.command = new Command(identifier, subCommand, flags, args);
         }
+
+        return;
     }
 }
 
