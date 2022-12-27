@@ -15,16 +15,20 @@ class Command
         this.args = args;
     }
 
-    load()
+    load(): Function
     {
         const modulePath = `${__dirname}/Module`;
         const moduleFilename = this.identifier.charAt(0).toUpperCase().concat(this.identifier.substring(1));
 
-        stat(`${modulePath}/${moduleFilename}.js`, (err, stats) => {
-            // console.log(modulePath);
-            console.log(err);
-            // console.log(stats);
-        });
+        // try {
+        //     stat(`${modulePath}/${moduleFilename}.js`, (err, stats) => {
+        //         if (err) {
+        //             return err;
+        //         }
+        //     });
+        // } catch(e:any) {
+        //     return `${this.identifier}: Command not found.`;
+        // }
 
         let commandMod = require(`${modulePath}/${moduleFilename}`);
 
