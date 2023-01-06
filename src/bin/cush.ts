@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 /**
- * CuSh - the Custmized Shell
+ * CuSh - the Custmizable Shell
  * @version 0.1.0-alpha
  * @author Er Galvão Abbott <galvao@galvao.eti.br>
  * @license MIT
