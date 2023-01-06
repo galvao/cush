@@ -1,12 +1,15 @@
-import { Command } from './Command';
+import { stat, existsSync } from 'node:fs';
+import { Shell } from './Shell';
 
 class Parser
 {
-    moduleFilename: string;
-    command: any;
+    public moduleFilename: string;
+    public command: any;
+    public shell: Shell;
 
-    constructor(input: string)
+    public constructor(shell: Shell, input: string)
     {
+        this.shell = shell;
         this.command = {};
         this.moduleFilename = '';
 
@@ -58,10 +61,31 @@ class Parser
         }
 
         if (identifier !== undefined) {
-            this.command = new Command(identifier, subCommand, flags, args);
+            try {
+                this.load(identifier, subCommand, flags, args);
+            } catch (err: any) {
+                throw(err);
+            }
+        }
+    }
+
+    private load(identifier: string, subCommand?: string, flags?:Object[], args?:string[]): void
+    {
+        const modulePath = `${__dirname}/Module`;
+        const moduleFilename = identifier.charAt(0).toUpperCase().concat(identifier.substring(1)) + '.js';
+        const fullPath = `${modulePath}/${moduleFilename}`;
+
+        if (existsSync(fullPath) === false) {
+            throw new Error(`${identifier}: Command not found.`);
         }
 
-        return;
+        this.command = new (require(`${modulePath}/${moduleFilename}`)).moduleClass(identifier, subCommand, flags, args);
+
+        if (subCommand !== undefined) {
+            if (typeof this.command[subCommand] !== 'function') {
+                throw new Error(`${subCommand}: subCommand not found in ${identifier}.`);
+            }
+        }
     }
 }
 
