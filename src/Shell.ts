@@ -11,7 +11,7 @@ class Shell
 
     public location: string;
 
-    constructor(user:User, lazy:boolean = true)
+    public constructor(user:User, lazy:boolean = true)
     {
         const process = require('node:process');
         const readline = require('node:readline');
@@ -39,22 +39,29 @@ class Shell
         }
     }
 
-    init(): void
+    private init(): void
     {
         this.cli.on('line', (input: string) => {
             input = input.trim();
-            console.log(input);
 
             if (input === 'quit') {
                 this.cli.close();
                 return;
             }
 
-            let parser = new Parser(input);
-            let result = parser.command.load();
+            try {
+                let parser = new Parser(this, input);
+                parser.command[parser.command.subCommand]();
+            } catch (err: any) {
+                console.log(err.message);
+            }
 
             this.cli.prompt();
         });
+    }
+
+    private validate()
+    {
     }
 
     getInterface(): Object
