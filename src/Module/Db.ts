@@ -1,15 +1,29 @@
-import { Command } from '../Command';
+import { CommandAbstraction } from '../Abstraction/Command';
+import { writeFile } from 'node:fs';
 
-class Db
+class Db extends CommandAbstraction
 {
-    constructor(command: Command)
+    public setCommand()
     {
-        console.log(command);
+        // this.command = command;
     }
 
-    configure()
+    public configure(): void
     {
+        const path = '../data/Db';
+        writeFile(path.concat('/config.json'), 'foo', (err) => { if (err) throw err; });
+    }
+
+    public help(): string
+    {
+        return '';
+    }
+
+    public about(): string
+    {
+        this.validFlags = {required: ['a'], optional: ['b']};
+        return 'foo';
     }
 }
 
-export { Db };
+export { Db as moduleClass };
